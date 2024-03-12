@@ -9,32 +9,34 @@ import SwiftUI
 
 struct ScheduleRowView: View {
   @Environment(\.colorScheme) private var colorScheme
+  @ScaledMetric private var circleDiameter = 32.0
   let schedule: StationSchedule
 
   var body: some View {
     HStack {
       VStack {
-        Text(schedule.route)
-          .foregroundStyle(getRouteTextColor(route: schedule.route))
-          .font(.system(size: 12))
-          .bold()
-          .padding(10)
-          .background(
-            Circle().foregroundColor(
-              getRouteBgColor(route: schedule.route)
-            )
-          )
+        ZStack {
+          Circle().foregroundColor(
+            getRouteBgColor(route: schedule.route)
+          ).frame(height: circleDiameter)
+
+          Text(schedule.route)
+            .foregroundStyle(getRouteTextColor(route: schedule.route))
+            .font(.callout)
+            .fontWeight(/*@START_MENU_TOKEN@*/ .bold/*@END_MENU_TOKEN@*/)
+        }
       }
 
-      Text(formattedArrivalTime(schedule.time))
+      Text(schedule.formattedRelativeTime())
         .foregroundStyle(.primary)
-        .opacity(0.8)
-        .font(.system(size: 14))
+        .font(.callout)
+        .monospacedDigit()
+
       Spacer()
-      Text(formatDateTime(schedule.time))
+      Text(schedule.formattedArrivalTime())
         .foregroundStyle(.secondary)
-        .opacity(0.8)
-        .font(.system(size: 14))
+        .font(.callout)
+        .monospacedDigit()
     }
     .frame(maxWidth: .infinity, alignment: .leading)
   }
@@ -56,49 +58,32 @@ struct ScheduleRowView: View {
     default: .gray
     }
   }
+}
 
-  func formatDateTime(_ ts: String) -> String {
-    let input = DateFormatter()
-    input.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
+func getDateFromNow(mins: Int) -> Date {
+  let now = Date()
+  let dateComponents = DateComponents(minute: mins)
 
-    if let date = input.date(from: ts) {
-      let output = DateFormatter()
-      output.dateFormat = "h:mm a"
-
-      return output.string(from: date)
-    } else {
-      return ts
-    }
-  }
-
-  func formattedArrivalTime(_ ts: String) -> String {
-    let mins = calculateMinsAway(ts)
-
-    if mins == 1 {
-      return "1 min away"
-    } else {
-      return "\(mins) mins away"
-    }
-  }
-
-  func calculateMinsAway(_ ts: String) -> Int {
-    let input = DateFormatter()
-    input.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
-
-    if let date = input.date(from: ts) {
-      let current = Date()
-      let seconds = Int(date.timeIntervalSince(current))
-
-      return seconds / 60
-    } else {
-      // TODO: handle failures better
-      return 0
-    }
-  }
+  return Calendar.current.date(byAdding: dateComponents, to: now)!
 }
 
 #Preview {
-  let schedule = StationSchedule(route: "Q", time: "2024-03-01T11:15:45-05:00")
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
 
-  return ScheduleRowView(schedule: schedule).padding()
+  return VStack {
+    ScheduleRowView(schedule: StationSchedule(
+      route: "Q",
+      time: dateFormatter.string(from: getDateFromNow(mins: 5)))
+    )
+    ScheduleRowView(schedule: StationSchedule(
+      route: "W",
+      time: dateFormatter.string(from: getDateFromNow(mins: 7)))
+    )
+    ScheduleRowView(schedule: StationSchedule(
+      route: "B",
+      time: dateFormatter.string(from: getDateFromNow(mins: 13)))
+    )
+
+  }.padding()
 }

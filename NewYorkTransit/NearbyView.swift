@@ -1,19 +1,19 @@
 //
-//  ContentView.swift
+//  NearbyView.swift
 //  NewYorkTransit
 //
-//  Created by Alex Reichert on 2/29/24.
+//  Created by Alex Reichert on 3/1/24.
 //
 
 import SwiftUI
 
-struct ContentView: View {
+struct NearbyView: View {
   @Environment(\.colorScheme) var colorScheme
   @StateObject var vm = ViewModel()
 
   var body: some View {
     NavigationStack {
-      list.navigationTitle("Trains")
+      list.navigationTitle("Nearby")
     }
   }
 
@@ -27,12 +27,11 @@ struct ContentView: View {
       }
     }
     .task {
-      await vm.fetchDemoStations()
+      await vm.fetchNearbyStations()
     }
   }
 }
 
 #Preview {
-  ContentView()
-//    .font(.custom("Helvetica Neue", size: 16))
+  NearbyView()
 }
