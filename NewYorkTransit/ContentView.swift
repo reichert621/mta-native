@@ -8,17 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+  @Environment(\.colorScheme) var colorScheme
+  @StateObject var vm = ViewModel()
+
+  var body: some View {
+    NavigationStack {
+      list.navigationTitle("Trains")
     }
+  }
+
+  var list: some View {
+    VStack(alignment: .leading, spacing: 0) {
+      ScrollView {
+        ForEach(vm.stations) { station in
+          StationView(station: station)
+            .padding(16)
+        }
+      }
+    }
+    .task {
+      await vm.fetchDemoStations()
+    }
+  }
 }
 
 #Preview {
-    ContentView()
+  ContentView()
 }

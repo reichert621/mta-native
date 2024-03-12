@@ -14,6 +14,10 @@
 		BBD29B652B91110C00285B9E /* NewYorkTransitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD29B642B91110C00285B9E /* NewYorkTransitTests.swift */; };
 		BBD29B6F2B91110C00285B9E /* NewYorkTransitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD29B6E2B91110C00285B9E /* NewYorkTransitUITests.swift */; };
 		BBD29B712B91110C00285B9E /* NewYorkTransitUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD29B702B91110C00285B9E /* NewYorkTransitUITestsLaunchTests.swift */; };
+		BBD29B7E2B91140600285B9E /* TransitApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD29B7D2B91140600285B9E /* TransitApi.swift */; };
+		BBD29B802B911AF400285B9E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD29B7F2B911AF400285B9E /* ViewModel.swift */; };
+		BBD29B842B9216B700285B9E /* StationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD29B832B9216B700285B9E /* StationView.swift */; };
+		BBD29B862B92185600285B9E /* ScheduleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD29B852B92185600285B9E /* ScheduleRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		BBD29B6A2B91110C00285B9E /* NewYorkTransitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NewYorkTransitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBD29B6E2B91110C00285B9E /* NewYorkTransitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewYorkTransitUITests.swift; sourceTree = "<group>"; };
 		BBD29B702B91110C00285B9E /* NewYorkTransitUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewYorkTransitUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BBD29B7D2B91140600285B9E /* TransitApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitApi.swift; sourceTree = "<group>"; };
+		BBD29B7F2B911AF400285B9E /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		BBD29B832B9216B700285B9E /* StationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationView.swift; sourceTree = "<group>"; };
+		BBD29B852B92185600285B9E /* ScheduleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +106,10 @@
 				BBD29B552B91110A00285B9E /* ContentView.swift */,
 				BBD29B572B91110C00285B9E /* Assets.xcassets */,
 				BBD29B592B91110C00285B9E /* Preview Content */,
+				BBD29B7D2B91140600285B9E /* TransitApi.swift */,
+				BBD29B7F2B911AF400285B9E /* ViewModel.swift */,
+				BBD29B832B9216B700285B9E /* StationView.swift */,
+				BBD29B852B92185600285B9E /* ScheduleRowView.swift */,
 			);
 			path = NewYorkTransit;
 			sourceTree = "<group>";
@@ -257,7 +269,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBD29B862B92185600285B9E /* ScheduleRowView.swift in Sources */,
 				BBD29B562B91110A00285B9E /* ContentView.swift in Sources */,
+				BBD29B842B9216B700285B9E /* StationView.swift in Sources */,
+				BBD29B7E2B91140600285B9E /* TransitApi.swift in Sources */,
+				BBD29B802B911AF400285B9E /* ViewModel.swift in Sources */,
 				BBD29B542B91110A00285B9E /* NewYorkTransitApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
