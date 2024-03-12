@@ -51,10 +51,10 @@ struct ScheduleRowView: View {
   func getRouteBgColor(route: String) -> Color {
     // TODO: use official MTA colors
     switch route {
-    case "N", "Q", "R", "W": .yellow
-    case "B", "D", "F", "M": .orange
-    case "A", "C", "E": .blue
-    case "G": .green
+    case "N", "Q", "R", "W": Color(hex: 0xFCCC0A)
+    case "B", "D", "F", "M": Color(hex: 0xFF6319)
+    case "A", "C", "E": Color(hex: 0x0039A6)
+    case "G": Color(hex: 0x6CBE45)
     default: .gray
     }
   }
@@ -65,6 +65,32 @@ func getDateFromNow(mins: Int) -> Date {
   let dateComponents = DateComponents(minute: mins)
 
   return Calendar.current.date(byAdding: dateComponents, to: now)!
+}
+
+func getMtaColor(name: String) -> Color {
+  switch name {
+  case "red": Color(hex: 0xEE352E)
+  case "orange": Color(hex: 0xFF6319)
+  case "yellow": Color(hex: 0xFCCC0A)
+  case "light-green": Color(hex: 0x6CBE45)
+  case "dark-green": Color(hex: 0x00933C)
+  case "blue": Color(hex: 0x0039A6)
+  case "purple": Color(hex: 0xB933AD)
+  case "light-gray": Color(hex: 0xA7A9AC)
+  case "dark-gray": Color(hex: 0x808183)
+  case "brown": Color(hex: 0x996633)
+  default: Color.gray
+  }
+}
+
+extension Color {
+  init(hex: Int, opacity: Double = 1.0) {
+    let red = Double((hex & 0xFF0000) >> 16) / 255.0
+    let green = Double((hex & 0xFF00) >> 8) / 255.0
+    let blue = Double((hex & 0xFF) >> 0) / 255.0
+
+    self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
+  }
 }
 
 #Preview {
