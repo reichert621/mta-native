@@ -9,9 +9,22 @@ import SwiftUI
 
 @main
 struct NewYorkTransitApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  var body: some Scene {
+    WindowGroup {
+      TabView {
+        ContentView()
+          .tabItem {
+            Label("Trains", systemImage: "tram")
+          }
+        NearbyView()
+          .tabItem {
+            Label("Nearby", systemImage: "location.circle")
+          }
+        SettingsView()
+          .tabItem {
+            Label("Settings", systemImage: "gearshape")
+          }
+      }
     }
+  }
 }

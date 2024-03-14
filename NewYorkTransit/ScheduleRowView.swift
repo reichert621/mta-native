@@ -9,32 +9,34 @@ import SwiftUI
 
 struct ScheduleRowView: View {
   @Environment(\.colorScheme) private var colorScheme
+  @ScaledMetric private var circleDiameter = 32.0
   let schedule: StationSchedule
 
   var body: some View {
     HStack {
       VStack {
-        Text(schedule.route)
-          .foregroundStyle(getRouteTextColor(route: schedule.route))
-          .font(.system(size: 12))
-          .bold()
-          .padding(10)
-          .background(
-            Circle().foregroundColor(
-              getRouteBgColor(route: schedule.route)
-            )
-          )
+        ZStack {
+          Circle().foregroundColor(
+            getRouteBgColor(route: schedule.route)
+          ).frame(height: circleDiameter)
+
+          Text(schedule.route)
+            .foregroundStyle(getRouteTextColor(route: schedule.route))
+            .font(.callout)
+            .fontWeight(/*@START_MENU_TOKEN@*/ .bold/*@END_MENU_TOKEN@*/)
+        }
       }
 
-      Text(formattedArrivalTime(schedule.time))
+      Text(schedule.formattedRelativeTime())
         .foregroundStyle(.primary)
-        .opacity(0.8)
-        .font(.system(size: 14))
+        .font(.callout)
+        .monospacedDigit()
+
       Spacer()
-      Text(formatDateTime(schedule.time))
+      Text(schedule.formattedArrivalTime())
         .foregroundStyle(.secondary)
-        .opacity(0.8)
-        .font(.system(size: 14))
+        .font(.callout)
+        .monospacedDigit()
     }
     .frame(maxWidth: .infinity, alignment: .leading)
   }
@@ -49,56 +51,65 @@ struct ScheduleRowView: View {
   func getRouteBgColor(route: String) -> Color {
     // TODO: use official MTA colors
     switch route {
-    case "N", "Q", "R", "W": .yellow
-    case "B", "D", "F", "M": .orange
-    case "A", "C", "E": .blue
-    case "G": .green
+    case "N", "Q", "R", "W": Color(hex: 0xFCCC0A)
+    case "B", "D", "F", "M": Color(hex: 0xFF6319)
+    case "A", "C", "E": Color(hex: 0x0039A6)
+    case "G": Color(hex: 0x6CBE45)
     default: .gray
-    }
-  }
-
-  func formatDateTime(_ ts: String) -> String {
-    let input = DateFormatter()
-    input.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
-
-    if let date = input.date(from: ts) {
-      let output = DateFormatter()
-      output.dateFormat = "h:mm a"
-
-      return output.string(from: date)
-    } else {
-      return ts
-    }
-  }
-
-  func formattedArrivalTime(_ ts: String) -> String {
-    let mins = calculateMinsAway(ts)
-
-    if mins == 1 {
-      return "1 min away"
-    } else {
-      return "\(mins) mins away"
-    }
-  }
-
-  func calculateMinsAway(_ ts: String) -> Int {
-    let input = DateFormatter()
-    input.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
-
-    if let date = input.date(from: ts) {
-      let current = Date()
-      let seconds = Int(date.timeIntervalSince(current))
-
-      return seconds / 60
-    } else {
-      // TODO: handle failures better
-      return 0
     }
   }
 }
 
-#Preview {
-  let schedule = StationSchedule(route: "Q", time: "2024-03-01T11:15:45-05:00")
+func getDateFromNow(mins: Int) -> Date {
+  let now = Date()
+  let dateComponents = DateComponents(minute: mins)
 
-  return ScheduleRowView(schedule: schedule).padding()
+  return Calendar.current.date(byAdding: dateComponents, to: now)!
+}
+
+func getMtaColor(name: String) -> Color {
+  switch name {
+  case "red": Color(hex: 0xEE352E)
+  case "orange": Color(hex: 0xFF6319)
+  case "yellow": Color(hex: 0xFCCC0A)
+  case "light-green": Color(hex: 0x6CBE45)
+  case "dark-green": Color(hex: 0x00933C)
+  case "blue": Color(hex: 0x0039A6)
+  case "purple": Color(hex: 0xB933AD)
+  case "light-gray": Color(hex: 0xA7A9AC)
+  case "dark-gray": Color(hex: 0x808183)
+  case "brown": Color(hex: 0x996633)
+  default: Color.gray
+  }
+}
+
+extension Color {
+  init(hex: Int, opacity: Double = 1.0) {
+    let red = Double((hex & 0xFF0000) >> 16) / 255.0
+    let green = Double((hex & 0xFF00) >> 8) / 255.0
+    let blue = Double((hex & 0xFF) >> 0) / 255.0
+
+    self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
+  }
+}
+
+#Preview {
+  let dateFormatter = DateFormatter()
+  dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
+
+  return VStack {
+    ScheduleRowView(schedule: StationSchedule(
+      route: "Q",
+      time: dateFormatter.string(from: getDateFromNow(mins: 5)))
+    )
+    ScheduleRowView(schedule: StationSchedule(
+      route: "W",
+      time: dateFormatter.string(from: getDateFromNow(mins: 7)))
+    )
+    ScheduleRowView(schedule: StationSchedule(
+      route: "B",
+      time: dateFormatter.string(from: getDateFromNow(mins: 13)))
+    )
+
+  }.padding()
 }

@@ -14,29 +14,29 @@ struct StationView: View {
   var body: some View {
     VStack(spacing: 8) {
       Text(station.name)
-        .font(.system(size: 20))
+        .font(.title2)
         .fontWeight(.bold)
         .frame(maxWidth: .infinity, alignment: .leading)
 
       Text("Northbound")
-        .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 4, trailing: 0))
         .foregroundStyle(.secondary)
-        .font(.system(size: 16))
+        .font(.headline)
         .frame(maxWidth: .infinity, alignment: .leading)
 
-      VStack(spacing: 0) {
+      VStack(spacing: 8) {
         ForEach(station.N) { schedule in
           ScheduleRowView(schedule: schedule)
         }
       }
 
       Text("Southbound")
-        .padding(EdgeInsets(top: 4, leading: 0, bottom: 0, trailing: 0))
+        .padding(EdgeInsets(top: 8, leading: 0, bottom: 4, trailing: 0))
         .foregroundStyle(.secondary)
-        .font(.system(size: 16))
+        .font(.headline)
         .frame(maxWidth: .infinity, alignment: .leading)
 
-      VStack(spacing: 0) {
+      VStack(spacing: 8) {
         ForEach(station.S) { schedule in
           ScheduleRowView(schedule: schedule)
         }

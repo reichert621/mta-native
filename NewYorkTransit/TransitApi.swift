@@ -91,6 +91,41 @@ struct StationSchedule: Decodable, Identifiable {
 
   let route: String
   let time: String
+
+  // TODO: where should these functions live?
+
+  func datetime() -> Date {
+    let input = DateFormatter()
+    input.dateFormat = "yyyy-MM-dd'T'HH:mm:ssXXX"
+
+    return input.date(from: time)!
+  }
+
+  func calculateMinsAway() -> Int {
+    let date = datetime()
+    let current = Date()
+    let seconds = Int(date.timeIntervalSince(current))
+
+    return seconds / 60
+  }
+
+  func formattedRelativeTime() -> String {
+    let mins = calculateMinsAway()
+
+    if mins == 1 {
+      return "1 min away"
+    } else {
+      return "\(mins) mins away"
+    }
+  }
+
+  func formattedArrivalTime() -> String {
+    let date = datetime()
+    let output = DateFormatter()
+    output.dateFormat = "h:mm a"
+
+    return output.string(from: date)
+  }
 }
 
 struct RoutesResponse: Decodable {
