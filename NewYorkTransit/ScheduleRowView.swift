@@ -19,14 +19,12 @@ struct ScheduleRowView: View {
           Circle().foregroundColor(
             getRouteBgColor(route: schedule.route)
           ).frame(height: circleDiameter)
-
           Text(schedule.route)
             .foregroundStyle(getRouteTextColor(route: schedule.route))
             .font(.callout)
             .fontWeight(/*@START_MENU_TOKEN@*/ .bold/*@END_MENU_TOKEN@*/)
         }
       }
-
       Text(schedule.formattedRelativeTime())
         .foregroundStyle(.primary)
         .font(.callout)
@@ -51,6 +49,9 @@ struct ScheduleRowView: View {
   func getRouteBgColor(route: String) -> Color {
     // TODO: use official MTA colors
     switch route {
+    case "1", "2", "3": Color(hex: 0xEE352E)
+    case "4", "5", "6", "6X": Color(hex: 0x00933C)
+    case "7", "7X": Color(hex: 0xB933AD)
     case "N", "Q", "R", "W": Color(hex: 0xFCCC0A)
     case "B", "D", "F", "M": Color(hex: 0xFF6319)
     case "A", "C", "E": Color(hex: 0x0039A6)

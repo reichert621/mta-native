@@ -68,6 +68,36 @@ class TransitApi {
 
     return result
   }
+
+  func fetchStationsByLocation(latitude: Double, longitude: Double) async throws -> StationsResponse {
+    var urlComponents = URLComponents(url: baseURL!.appendingPathComponent("/api/stations"), resolvingAgainstBaseURL: false)!
+    let queryItems = [
+      URLQueryItem(name: "latitude", value: "\(latitude)"),
+      URLQueryItem(name: "longitude", value: "\(longitude)"),
+      URLQueryItem(name: "limit", value: "5")
+    ]
+    urlComponents.queryItems = queryItems
+
+    guard let url = urlComponents.url else {
+      throw "Invalid url"
+    }
+
+    let (data, response) = try await session.data(from: url)
+
+    guard let httpResponse = response as? HTTPURLResponse else {
+      print("Invalid response")
+      throw "Invalid response"
+    }
+
+    guard 200 ... 299 ~= httpResponse.statusCode else {
+      print("Bad Response: \(httpResponse.statusCode)")
+      throw "Bad Response: \(httpResponse.statusCode)"
+    }
+
+    let result = try JSONDecoder().decode(StationsResponse.self, from: data)
+
+    return result
+  }
 }
 
 extension String: Error {}

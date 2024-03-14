@@ -35,4 +35,15 @@ class ViewModel: ObservableObject {
       print(error.localizedDescription)
     }
   }
+
+  @MainActor
+  func fetchStationsByLocation(latitude: Double, longitude: Double) async {
+    do {
+      let response = try await api.fetchStationsByLocation(latitude: latitude, longitude: longitude)
+
+      stations = response.data
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
 }
