@@ -25,18 +25,6 @@ class ViewModel: ObservableObject {
   }
 
   @MainActor
-  func fetchNearbyStations() async {
-    do {
-      // TODO: fetch by location!
-      let response = try await api.fetchStationsById(ids: ["ec1f"])
-
-      stations = response.data
-    } catch {
-      print(error.localizedDescription)
-    }
-  }
-
-  @MainActor
   func fetchStationsByLocation(latitude: Double, longitude: Double) async {
     do {
       let response = try await api.fetchStationsByLocation(latitude: latitude, longitude: longitude)
